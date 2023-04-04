@@ -9,8 +9,16 @@ namespace Bear
         private readonly BNode node = new();
         //implement IBNode interface using node
        public void AddNodeData(IBNodeData data)
-        {
-            node.AddNodeData(data);
+       {
+            var Nodedata = node.Nodedata;
+            var key = data.GetType().ToString();
+            if (Nodedata.TryGetValue(key, out var oldData))
+            {
+                Nodedata.Remove(key);
+                oldData.Detached();
+            }
+            Nodedata.Add(key, data);
+            data.Init(this);
         }
         public void RemoveNodeData(IBNodeData data)
         {

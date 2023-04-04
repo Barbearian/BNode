@@ -7,7 +7,7 @@ namespace Bear
 {
     public static class BNodeSerializationSystem
     {
-        public static string ToData(this IBNode node)
+        public static string ToData(this IBNodeData node)
         {
 
             var settings = new JsonSerializerSettings
@@ -19,18 +19,18 @@ namespace Bear
             return rs;
         }
 
-        public static IBNode ToBNode(this string data)
+        public static IBNodeData ToBNode(this string data)
         {
             var settings = new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All
             };
 
-            return JsonConvert.DeserializeObject<IBNode>(data, settings);
+            return JsonConvert.DeserializeObject<IBNodeData>(data, settings);
         }
 
         //serialize BNode to bson
-        public static byte[] ToBson(this IBNode node)
+        public static byte[] ToBson(this IBNodeData node)
         {
             var settings = new JsonSerializerSettings
             {
@@ -48,7 +48,7 @@ namespace Bear
         }
 
         //deserialize Bson
-        public static IBNode ToBNode(this byte[] data)
+        public static IBNodeData ToBNode(this byte[] data)
         {
             var settings = new JsonSerializerSettings
             {
@@ -62,7 +62,7 @@ namespace Bear
             {
                 var serializer = JsonSerializer.Create(settings);
 
-                var bson = serializer.Deserialize<IBNode>(reader);
+                var bson = serializer.Deserialize<IBNodeData>(reader);
                 return bson;
                 // Do something with the BsonDocument
             }

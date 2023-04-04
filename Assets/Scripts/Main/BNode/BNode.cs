@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 
 namespace Bear
 {
@@ -22,9 +23,25 @@ namespace Bear
         public void Detached();
     }
 
-   
+    public class BNodeViewData : IBNodeData
+    {
+        protected BNodeView root;
+        public virtual void Detached()
+        {
+            
+        }
+
+        public virtual void Init(IBNode root)
+        {
+            if (root is BNodeView broot) { 
+                this.root = broot;
+            }
+        }
+    }
+
+
     //implementation of IBNode
-   public class BNode : IBNode
+    public class BNode : IBNode
     {
         //dictionary to store node data
         public Dictionary<string, IBNodeData> Nodedata { get; set; } = new Dictionary<string, IBNodeData>();
@@ -74,6 +91,8 @@ namespace Bear
             Root = root;
         }
         public void Detached(){}
+
+       
     }
     
 
