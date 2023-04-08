@@ -3,18 +3,25 @@ using System.Collections.Generic;
 
 namespace Bear
 {
-    public struct ActionNodeData : IBNodeData,IBNodeSignalReceiver
+    public class ActionSignalReceiver : IBNodeSignalReceiver
     {
         public System.Action<IBNodeSignal> DAction;
-        public void Detached(){}
-
-        public void Init(IBNode root){}
 
         public void ReceiveSignal(IBNodeSignal signal)
         {
             DAction(signal);
         }
+
+        public void RemoveAction(System.Action<IBNodeSignal> action) { 
+            DAction -= action;
+        }
+
+        public void AddAction(System.Action<IBNodeSignal> action)
+        {
+            DAction += action;
+        }
     }
+
 
     public class SignalHandlerNodeData : IBNodeData
     {
@@ -30,4 +37,6 @@ namespace Bear
             this.root = root;
         }
     }
+
+    
 }

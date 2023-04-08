@@ -6,7 +6,7 @@ namespace Bear
     {
         private static bool inited = false;
         private static IBNode _root;
-        public static IBNode root { 
+        public static IBNode Root { 
             get {
                 if (inited)
                     return _root;

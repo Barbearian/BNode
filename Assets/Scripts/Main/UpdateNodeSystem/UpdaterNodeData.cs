@@ -1,4 +1,3 @@
-using System.ComponentModel.Design.Serialization;
 using UnityEngine;
 
 namespace Bear
@@ -7,6 +6,8 @@ namespace Bear
     {
         static UpdaterObserver updater;
         private IBNode root;
+        
+        
 
         public void Detached() { 
             root.UnregisterNodeSignalReceiver<RegisterUpdaterSignal>();
@@ -18,8 +19,15 @@ namespace Bear
 
             if (updater == null)
             {
-                updater = new GameObject("Updater").AddComponent<UpdaterObserver>();
-                Object.DontDestroyOnLoad(updater);
+                if (root is BNodeView view)
+                {
+                    updater = view.gameObject.AddComponent<UpdaterObserver>();
+                }
+                else {
+                    updater = new GameObject("Updater").AddComponent<UpdaterObserver>();
+                    Object.DontDestroyOnLoad(updater);
+                }
+
             }
 
             //register RegisterUpdater and RegisterFixedUpdater
@@ -43,13 +51,16 @@ namespace Bear
 
     }
 
+
     public struct RegisterUpdaterSignal:IBNodeSignal
     {
+        public string key;
         public UpdateOperator uoperator;
     }
 
     public struct RegisterFixedUpdaterSignal : IBNodeSignal
     {
+        public string key;
         public UpdateOperator uoperator;
     }
 

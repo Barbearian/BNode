@@ -38,7 +38,7 @@ namespace Bear
 
     }
 
-    public struct UpdateOperator {
+    public class UpdateOperator {
         public System.Action action;
         public OperatorStage stage;
 

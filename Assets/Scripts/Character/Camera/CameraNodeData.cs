@@ -28,10 +28,28 @@ namespace Bear {
             return dir;
         }
 
+        public Quaternion CameraRotation => cam.transform.rotation;
+
         public static CameraNodeData GetMainCamView() {
-            instance ??= Camera.main.GetOrAddComponent<BNodeView>().GetOrCreateNodeData<CameraNodeData>();
+            instance ??= Camera.main.GetOrAddComponent<BNodeView>().GetOrAddNodeData<CameraNodeData>();
             return instance;
 
+        }
+
+
+    }
+
+    public static class CameraNodeDataExtension
+    {
+        public static Vector3 GetInputDir(this CameraNodeData camNodeData, Vector2 inputDir)
+        {
+
+            float inputx = inputDir.x;
+            float inputy = inputDir.y;
+
+            Vector3 dir = camNodeData.CameraRotation * Vector3.forward * inputy + camNodeData.CameraRotation * Vector3.right * inputx;
+            dir.y = 0;
+            return dir.normalized;
         }
     }
 }

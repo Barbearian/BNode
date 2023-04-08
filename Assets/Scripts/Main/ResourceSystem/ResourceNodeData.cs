@@ -1,6 +1,5 @@
-
-using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Bear
@@ -8,6 +7,7 @@ namespace Bear
 
     public class ResourceNodeData : IBNodeData
     {
+        public Dictionary<string, IBNode> resources = new Dictionary<string, IBNode>();
         public void Detached()
         {
         }
@@ -15,91 +15,46 @@ namespace Bear
         
         public void Init(IBNode root)
         {
-            FetchSignalAction = this.GetResourceDefault;
         }
 
-        public Action<RequestResourceSignal> FetchSignalAction { get; set; }
-
-        //register add remove get functions to BNode
-        public void Register(IBNode root)
-        {
-            root.RegisterNodeSignalReceiver<AddResourceSignal>(
-                (x)=> {
-                    AddResource(x.key,x.value);
-                }
-            );
-            root.RegisterNodeSignalReceiver<RemoveResourceSignal>(
-                (x) => {
-                    RemoveResource(x.key);
-                }
-              );
-            root.RegisterNodeSignalReceiver<RequestResourceSignal>(
-                (x) => {
-
-                    FetchSignalAction(x);
-                }
-                
-                );
-        }
-
-        //create dictionary with string as key and gameobject as value,
-        //then provide methods to CURD it
-        public Dictionary<string, object> resourceDict = new();
-        public void AddResource(string key, object value)
-        {
-            resourceDict.Add(key, value);
-        }
-        public void RemoveResource(string key)
-        {
-            resourceDict.Remove(key);
-        }
-       
-       
-
-
-
-
-    }
-
-    public static class ResourceNodeDataExtension
-    {
-        //take request resource signal and send resource fetched signal to sender
-        //if found send the value, if not send null
-        public static void GetResourceDefault(this ResourceNodeData data,RequestResourceSignal signal)
-        {
-            var resourceDict = data.resourceDict;
-            string key = signal.key;
-            IBNode sender = signal.sender;
-            if (resourceDict.ContainsKey(key))
+        public ResourceHolderNodeData Load<T>(string Key, IBNode resourceHolder) { 
+                        
+            if (resources.ContainsKey(Key))
             {
-                sender.ReceiveNodeSignal(new ResourceFetchedSignal() { key = key, value = resourceDict[key] });
+                return resources[Key].GetOrAddNodeData<ResourceHolderNodeData>();
             }
             else
             {
-                sender.ReceiveNodeSignal(new ResourceFetchedSignal() { key = key, value = null });
+                var holder = CreateHolder<T>(Key, resourceHolder);
+                resources.Add(Key, resourceHolder);
+                return holder;
             }
+
         }
+
+        private ResourceHolderNodeData CreateHolder<T>(string key, IBNode resourceHolder)
+        {
+            var holder = resourceHolder.GetOrAddNodeData<ResourceHolderNodeData>();
+            //if T is Object then add BNodeView
+            if (typeof(T) == typeof(Object))
+            {
+                holder.Resource = Resources.Load(key).AddComponent<BNodeView>();
+            }
+            else
+            {
+                holder.Resource = new ResourceNode()
+                {
+                    Resource = Resources.Load(key)
+                };
+            }
+            return holder;
+        }
+        
+        
+
+
+
     }
 
-    public struct AddResourceSignal:IBNodeSignal
-    {
-        public string key;
-        public object value;
-    }
 
-    public struct RemoveResourceSignal:IBNodeSignal
-    {
-        public string key;
-    }
-
-    public struct RequestResourceSignal:IBNodeSignal
-    { 
-        public string key; 
-        public IBNode sender; 
-    }
-
-    public struct ResourceFetchedSignal : IBNodeSignal { 
-        public string key;
-        public object value;
-    }
 }

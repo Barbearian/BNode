@@ -48,5 +48,19 @@ namespace Bear
         {
             receivers.Clear();
         }
+
+        //try get receiver
+        public bool TryGetReceiver(string key, out IBNodeSignalReceiver receiver)
+        {
+            return receivers.TryGetValue(key, out receiver);
+        }
+
+        //update receiver
+        public void UpdateReceiver(string key, IBNodeSignalReceiver receiver)
+        {
+            receivers[key] = receiver;
+        }
+
+
     }
 }

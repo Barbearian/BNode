@@ -17,11 +17,16 @@ namespace Bear
         public Vector3 rootPosition;
 
         //movement controll
-        public bool CanMoving;
-        public bool CanRotating;
+        public bool CanMoving = true;
+        public bool CanRotating = true;
 
-
-
+        //Movement Status
+        MovementStatusNodeData msn;
+        public float MoveSpeed {
+            get {
+                return msn.MoveSpeed;            
+            }        
+        }
 
         //input
         private MovementInputNodeData mid;
@@ -36,7 +41,6 @@ namespace Bear
                 return mid.MoveDir;
             }
         }
-        public float MoveSpeed;
 
         //initation
         UpdateOperator moveUpdate;
@@ -48,7 +52,10 @@ namespace Bear
         public void Init(IBNode root)
         {
             if (root is BNodeView trans) { 
+                //get components
                 cc = trans.GetComponent<CharacterController>();
+                mid = root.GetOrAddNodeData<MovementInputNodeData>();
+                msn = root.GetOrAddNodeData<MovementStatusNodeData>();
 
                 lerp = new CharacterRotationLerp() {
                     rotationTarget = cc.transform,
@@ -56,7 +63,6 @@ namespace Bear
 
                 };
 
-                mid = root.GetOrCreateNodeData<MovementInputNodeData>();
 
                 var updater = cc.GetOrAddComponent<UpdaterObserver>();
                 moveUpdate = new UpdateOperator() { 
@@ -85,7 +91,7 @@ namespace Bear
 
             var moveDir = Vector3.zero;
 
-            if (CanMoving) moveDir += this.MoveDir * MoveSpeed;
+            if (CanMoving) moveDir += MoveDir * MoveSpeed;
             moveDir += force;
             moveDir += gravityAccumulation;
 
@@ -97,6 +103,7 @@ namespace Bear
             {
                 force = Vector3.zero;
             }
+
 
             cc.Move(moveDir);
 

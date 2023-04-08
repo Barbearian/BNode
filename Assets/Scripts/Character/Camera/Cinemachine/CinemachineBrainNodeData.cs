@@ -12,13 +12,15 @@ namespace Bear {
         public void Init(IBNode root)
         {
             if (root is BNodeView view) { 
-                brain = view.GetOrAddComponent<CinemachineBrain>(); 
+                brain = view.GetOrAddComponent<CinemachineBrain>();
+                brain.m_UpdateMethod = CinemachineBrain.UpdateMethod.FixedUpdate;
+                brain.m_BlendUpdateMethod = CinemachineBrain.BrainUpdateMethod.FixedUpdate;
             }
         }
 
         public static CinemachineBrainNodeData GetMainCameraCinemachineBrainNodeData()
         {
-            return CameraNodeData.GetMainCamView().Root.GetOrCreateNodeData<CinemachineBrainNodeData>();
+            return CameraNodeData.GetMainCamView().Root.GetOrAddNodeData<CinemachineBrainNodeData>();
         }
     }
 }

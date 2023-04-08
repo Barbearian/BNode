@@ -101,12 +101,12 @@ public partial class @PlayerControllerInput : IInputActionCollection2, IDisposab
             ""actions"": [
                 {
                     ""name"": ""CameraMove"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""3a6da06f-af23-4879-bd2a-614b80d483ff"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [

@@ -20,6 +20,13 @@ namespace Bear
             Nodedata.Add(key, data);
             data.Init(this);
         }
+
+        public T AddNodeData<T>() where T : IBNodeData,new()
+        {
+            var rs = new T();
+            AddNodeData(rs);
+            return rs;
+        }
         public void RemoveNodeData(IBNodeData data)
         {
             node.RemoveNodeData(data);
