@@ -38,15 +38,9 @@ namespace Bear
             //if T is Object then add BNodeView
             if (typeof(T) == typeof(Object))
             {
-                holder.Resource = Resources.Load(key).AddComponent<BNodeView>();
+                holder.Resource = Resources.Load<Object>(key);
             }
-            else
-            {
-                holder.Resource = new ResourceNode()
-                {
-                    Resource = Resources.Load(key)
-                };
-            }
+            
             return holder;
         }
         

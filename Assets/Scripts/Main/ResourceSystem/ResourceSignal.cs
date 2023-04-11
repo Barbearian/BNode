@@ -9,4 +9,11 @@ namespace Bear
         public string address;
         
     }
+
+    [System.Serializable]
+    public struct ResourceInjectSignal : IBNodeSignal
+    {
+        public string Key;
+        public string Path;
+    }
 }

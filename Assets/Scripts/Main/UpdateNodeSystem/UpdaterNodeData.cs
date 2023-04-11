@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Bear
@@ -21,10 +22,10 @@ namespace Bear
             {
                 if (root is BNodeView view)
                 {
-                    updater = view.gameObject.AddComponent<UpdaterObserver>();
+                    updater = view.gameObject.GetOrAddComponent<UpdaterObserver>();
                 }
                 else {
-                    updater = new GameObject("Updater").AddComponent<UpdaterObserver>();
+                    updater = new GameObject("Updater").GetOrAddComponent<UpdaterObserver>();
                     Object.DontDestroyOnLoad(updater);
                 }
 

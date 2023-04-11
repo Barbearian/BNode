@@ -6,8 +6,8 @@ namespace Bear
 {
     public class ResourceHolderNodeData : IBNodeData
     {
-        private IBNode m_resource;
-        public IBNode Resource { 
+        private UnityEngine.Object m_resource;
+        public UnityEngine.Object Resource { 
             get { return m_resource; }
             set { 
                 m_resource = value;

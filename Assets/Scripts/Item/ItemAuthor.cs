@@ -7,12 +7,19 @@ namespace Bear
         public string path;
         private void Awake()
         {
-            new BNode().RequestObject(path).OnLoadComplete((x) => {
-                if (x.Object is BNodeView view) {
+            var holder = new BNode().RequestObject(path);
+            holder.OnLoadComplete((x) =>
+            {
+                if (x.Object is BNodeView view)
+                {
                     view.MoveTo(transform);
                 }
             });
         }
+
+
+        //create three task print hello world
+        //wait for all three to be finished
 
 
 

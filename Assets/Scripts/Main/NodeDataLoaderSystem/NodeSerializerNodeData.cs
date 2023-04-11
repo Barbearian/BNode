@@ -13,24 +13,6 @@ namespace Bear
         {
         }
 
-        //read from text file and deserialize to node
-        public ResourceHolderNodeData Load(IBNode node, string path)
-        {
-            var rs = new BNode().GetOrAddNodeData<ResourceHolderNodeData>();
-            var holder = new BNode().RequestResource<TextAsset>(path);
-            holder.OnLoadComplete((x) => {
-                if (x.Resource is ResourceNode rnode) {
-                    if (rnode.Resource is TextAsset asset) {
-                        var json = asset.text;
-                        rs.Resource = json.ToBNode();
-                    }
-                }
-            });
-
-            return rs;
-
-
-        }
 
         public IBNode Load(string path)
         {

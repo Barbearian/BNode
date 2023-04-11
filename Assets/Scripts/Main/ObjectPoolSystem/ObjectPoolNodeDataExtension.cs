@@ -1,4 +1,6 @@
 using System;
+using Unity.VisualScripting;
+
 namespace Bear
 {
     public static class ObjectPoolNodeDataExtension
@@ -14,6 +16,13 @@ namespace Bear
 
         }
 
+        public static ObjectHolderNodeData RequestObject(this IBNode node, string resourceKey,Action<ObjectHolderNodeData> oncomplete)
+        {
+            var request = node.RequestObject(resourceKey);
+            request.OnLoadComplete(oncomplete);
+            return request;
+        }
+
 
         public static Func<IBNode> CreateHolder(IBNode root,string resourceKey) {
             return () =>
@@ -22,14 +31,12 @@ namespace Bear
                 var objectholder = objectNode.AddNodeData<ObjectHolderNodeData>();
 
                 var resourceNode = new BNode();
-                root.RequestResource<Object>(resourceNode, resourceKey).OnLoadComplete((x) => {
-                    if (x.Resource is BNodeView view)
+                root.RequestResource<UnityEngine.Object>(resourceNode, resourceKey).OnLoadComplete((x) => {
+                    if (x.Resource is UnityEngine.Object view)
                     {
-                        objectholder.Object = UnityEngine.Object.Instantiate(view);
+                        objectholder.Object = UnityEngine.Object.Instantiate(view).GetOrAddComponent<BNodeView>();
                     }
-                    else {
-                        objectholder.Object = x.Resource;
-                    }
+                    
                 });
                 return objectNode;
             };
