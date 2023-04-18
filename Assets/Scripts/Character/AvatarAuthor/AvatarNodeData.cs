@@ -1,3 +1,4 @@
+using UnityEditor.AnimatedValues;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -60,6 +61,13 @@ namespace Bear
             cam.ReceiveNodeSignal(new LookAtTargetSignal()
             {
                 Target = animView.transform
+            });
+
+            //controller->animator
+            controllerView.AddNodeData(new AnimatorSpeedUpdateNodeData());
+            controllerView.ReceiveNodeSignal(new AnimatorLinkSignal()
+            {
+                LinkTarget = animView,
             });
 
         }

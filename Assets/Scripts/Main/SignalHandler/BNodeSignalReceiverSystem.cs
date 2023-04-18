@@ -16,6 +16,17 @@ namespace Bear
             receiver.ReceiveSignal(key, signal);
         }
 
+        public static void ReceiveNodeSignal(this IBNode node, string key,IBNodeSignal signal)
+        {
+            if (!node.FindNodeData<IBNodeSignalReceiverContainer>(out var receiver))
+            {
+                receiver = new IBNodeSignalReceiverContainer();
+                node.AddNodeData(receiver);
+            }
+
+            receiver.ReceiveSignal(key, signal);
+        }
+
         //register an signal receiver to node, with a string key and signal receiver as input
         //if there is no signal receiver container in the node, create one
         //add the signal receiver to the container with the key

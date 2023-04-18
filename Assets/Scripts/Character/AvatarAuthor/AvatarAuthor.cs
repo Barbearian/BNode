@@ -45,6 +45,8 @@ namespace Bear
             {
                 Target = animRoot.transform
             });
+
+
         }
     }
 }

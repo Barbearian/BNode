@@ -20,7 +20,7 @@ namespace Bear
             get { return m_Phase; } 
             set {
                 m_Phase = value;
-                DOnPhaseChange?.Invoke(this);
+                InternalComplete();
             } 
         
         }
@@ -39,10 +39,17 @@ namespace Bear
         public ObjectHolderNodeData OnLoadComplete(Action<ObjectHolderNodeData> action) {
             DOnObjectUpdate += action;
             if(m_Object != null) {
-                action?.Invoke(this); 
+                InternalComplete();
+
             }
 
             return this;
+        }
+
+        private void InternalComplete()
+        {
+            DOnObjectUpdate?.Invoke(this);
+            DOnObjectUpdate = null;
         }
 
     }

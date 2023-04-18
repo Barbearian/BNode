@@ -59,7 +59,7 @@ namespace Bear
         {
             //RegisterNodeSignalReceiverAdditively with T as key
             var key = typeof(T).ToString();
-           
+
         }
     }
 }

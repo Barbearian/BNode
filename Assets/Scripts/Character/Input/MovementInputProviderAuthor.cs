@@ -11,7 +11,7 @@ namespace Bear
         
         void Start()
         {
-            var root = gameObject.GetOrCreateComponent<BNodeView>();
+            var root = gameObject.GetOrAddComponent<BNodeView>();
             root.AddNodeData(new MovementInputProviderNodeData());
 
             //get PlayerInput from PlayerControllerInput

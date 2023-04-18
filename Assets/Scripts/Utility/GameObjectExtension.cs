@@ -3,7 +3,7 @@ namespace Bear
 {
     public static class GameObjectExtension
     {
-        public static T GetOrCreateComponent<T>(this GameObject obj)
+        public static T GetOrAddComponent<T>(this GameObject obj)
         where T : Component
         {
             if (obj.TryGetComponent<T>(out var rs))
@@ -31,6 +31,18 @@ namespace Bear
                 obj.transform.position = target.position;
             }
             return obj;
+        }
+
+        public static bool FindKidWithTag(this Transform transform,string tag,out Transform rs) {
+            foreach (var item in transform.GetComponentsInChildren<Transform>())
+            {
+                if (item.CompareTag(tag)) {
+                    rs = item;
+                    return true;
+                }
+            }
+            rs = null;
+            return false;
         }
     }
 

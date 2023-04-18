@@ -22,6 +22,9 @@ namespace Bear
 
         //Movement Status
         MovementStatusNodeData msn;
+
+        //Movement Observer 
+        MovementObserverNodeData mon;
         public float MoveSpeed {
             get {
                 return msn.MoveSpeed;            
@@ -56,6 +59,7 @@ namespace Bear
                 cc = trans.GetComponent<CharacterController>();
                 mid = root.GetOrAddNodeData<MovementInputNodeData>();
                 msn = root.GetOrAddNodeData<MovementStatusNodeData>();
+                mon = root.GetOrAddNodeData<MovementObserverNodeData>();
 
                 lerp = new CharacterRotationLerp() {
                     rotationTarget = cc.transform,
@@ -106,6 +110,7 @@ namespace Bear
 
 
             cc.Move(moveDir);
+            mon.Speed = cc.velocity;
 
             rootPosition = Vector3.zero;
         }

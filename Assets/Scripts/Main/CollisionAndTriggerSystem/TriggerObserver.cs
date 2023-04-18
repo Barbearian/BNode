@@ -11,7 +11,7 @@ namespace Bear
         {
             if (view == null)
             {
-                view = gameObject.AddComponent<BNodeView>();
+                view = gameObject.GetOrAddComponent<BNodeView>();
             }
         }
 
