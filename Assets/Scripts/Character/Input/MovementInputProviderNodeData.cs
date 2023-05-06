@@ -53,10 +53,11 @@ namespace Bear
             mi.RotateDir = mi.MoveDir;
         }
 
-        public void InitInput(PlayerInput input)
+        public void InitInput(InputNodeData data)
         {
-            Debug.Log("movement Input inited");
 
+            Debug.Log("movement Input inited");
+            var input = data.input;
             UnInitInput();
             this.input = input;
             //register OnMove to input

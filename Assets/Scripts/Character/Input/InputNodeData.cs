@@ -1,20 +1,25 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using UnityEngine.InputSystem;
 
 namespace Bear
 {
     public class InputNodeData : IBNodeData
     {
-        private PlayerInput input;
+        public PlayerInput input;
         private Dictionary<string, RequestPlayerInputSignal> map = new Dictionary<string, RequestPlayerInputSignal>();
-        
+        public Dictionary<string,Action<InputAction.CallbackContext>> registeredActions = new Dictionary<string, Action<InputAction.CallbackContext>>();
         public void Detached()
         {
         }
 
         public void Init(IBNode root)
         {
+            if (root is BNodeView view && view.TryGetComponent<PlayerInput>(out var input)) { 
+                InitInput(input);
+            }
+
             root.RegisterNodeSignalReceiver<InitInputSignal>((x) => {
                 InitInput(x.input);
             });
@@ -23,7 +28,7 @@ namespace Bear
             root.RegisterNodeSignalReceiver<RequestPlayerInputSignal>((x) => {
                 if (this.input != null)
                 {
-                    x.DOnSuccess?.Invoke(this.input);
+                    x.DOnSuccess?.Invoke(this);
                 }
 
                 map[x.key] = x;
@@ -38,7 +43,7 @@ namespace Bear
             //invoke all the signals that were waiting for the input to be initialized
             foreach (var item in map)
             {
-                item.Value.DOnSuccess?.Invoke(this.input);
+                item.Value.DOnSuccess?.Invoke(this);
             }
         }
     }
@@ -49,7 +54,7 @@ namespace Bear
     }
 
     public struct RequestPlayerInputSignal : IBNodeSignal {
-        public Action<PlayerInput> DOnSuccess;
+        public Action<InputNodeData> DOnSuccess;
         public string key;
     }
 }
