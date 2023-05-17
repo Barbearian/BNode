@@ -16,7 +16,7 @@ namespace Bear
             return data.GetValue<T>(key);
         }
 
-        public static Action Register<T>(this IBNode node, string key,Action<T> action) {
+        public static Action ListenToValue<T>(this IBNode node, string key,Action<T> action) {
             var data = node.GetOrAddNodeData<BindablePropertyNodeData>();
             return data.Register(key, action);
         }

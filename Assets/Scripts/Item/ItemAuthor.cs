@@ -9,9 +9,20 @@ namespace Bear
         public string equipPath;
         private void Awake()
         {
-            var root = new BNode();
-            var view = root.AddNodeData<ViewNodeData>();
+            var root = GetItemNode();
+            Instantiate(root);
+        }
+
+        public IBNode GetItemNode() { 
+            IBNode bNode = new BNode();
+            var view = bNode.AddNodeData<ViewNodeData>();
             view.ViewAddress = path;
+
+            return bNode;
+        }
+
+        public IBNode Instantiate(IBNode node) {
+            var view = node.GetOrAddNodeData<ViewNodeData>();   
             view.Reveal().MoveTo(transform).SetParentTo(transform);
 
             //add trigger 
@@ -23,17 +34,17 @@ namespace Bear
                 var item = new BNode();
                 var view = item.AddNodeData<ViewNodeData>();
                 view.ViewAddress = path;
-                item.AddNodeData<EquipmentNodeData>();  
+                item.AddNodeData<EquipmentNodeData>();
                 x.AddItem(item);
 
-                item.ReceiveNodeSignal(new OnEquippedNodeSignal() { 
-                    root= x,
+                item.ReceiveNodeSignal(new OnEquippedNodeSignal()
+                {
+                    root = x,
                     tag = equipPath
                 });
 
             };
-
-
+            return bnode;
         }
 
 
