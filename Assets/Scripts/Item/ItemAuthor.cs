@@ -24,7 +24,6 @@ namespace Bear
         public IBNode Instantiate(IBNode node) {
             var view = node.GetOrAddNodeData<ViewNodeData>();   
             view.Reveal().MoveTo(transform).SetParentTo(transform);
-
             //add trigger 
             gameObject.GetOrAddComponent<TriggerObserver>();
 

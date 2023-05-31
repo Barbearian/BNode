@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 namespace Bear
 {
 
     public class BNodeView : MonoBehaviour,IBNode
     {
-        private readonly BNode node = new();
+        private BNode node = new();
         //implement IBNode interface using node
        public void AddNodeData(IBNodeData data)
        {
@@ -19,6 +17,10 @@ namespace Bear
             }
             Nodedata.Add(key, data);
             data.Init(this);
+        }
+
+        public void Bind(IBNode node) {
+            this.node = node as BNode;
         }
 
         public T AddNodeData<T>() where T : IBNodeData,new()

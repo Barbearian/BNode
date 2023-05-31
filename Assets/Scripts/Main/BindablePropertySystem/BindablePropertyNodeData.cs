@@ -34,6 +34,17 @@ namespace Bear
             }
         }
 
+        public bool TryGetValue<T>(string key,out T value ) {
+            if (BProperties.TryGetValue(key, out var bProperty))
+            {
+                value = bProperty.GetValue<T>();
+                return true;
+            }
+
+            value = default;
+            return false;
+        }
+
         public Action Register<T>(string key,Action<T> listener) {
             if (!BProperties.TryGetValue(key, out var bProperty))
             {
@@ -41,6 +52,10 @@ namespace Bear
                 BProperties[key] = bProperty;
             }
             return bProperty.RegisterAction(listener);
+        }
+
+        public void RemoveValue(string key) {
+            BProperties.Remove(key);
         }
 
 

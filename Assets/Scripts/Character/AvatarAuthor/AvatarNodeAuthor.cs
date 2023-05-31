@@ -10,7 +10,7 @@ namespace Bear
         {
             var avatarNode = GetAvatarNode();
             InstantiateAvatar(avatarNode);
-      
+        
         }
 
         //it will generate a node that represent character status however it is only data and has no view
