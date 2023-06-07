@@ -13,7 +13,7 @@ namespace Bear
         {
             camPref = Instantiate(camPref);
             CinemachineBrainNodeData.GetMainCameraCinemachineBrainNodeData();
-            var node = camPref.GetOrAddComponent<BNodeView>();
+            var node = camPref.gameObject.GetOrAddComponent<BNodeView>();
             node.GetOrAddNodeData<CinemachineNodeData>();
             node.ReceiveNodeSignal(new LookAtTargetSignal() { 
                 Target = transform,

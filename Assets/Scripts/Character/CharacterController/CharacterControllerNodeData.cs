@@ -1,5 +1,4 @@
-using System;
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 namespace Bear
@@ -68,7 +67,7 @@ namespace Bear
                 };
 
 
-                var updater = cc.GetOrAddComponent<UpdaterObserver>();
+                var updater = cc.gameObject.GetOrAddComponent<UpdaterObserver>();
                 moveUpdate = new UpdateOperator() { 
                     action = FixedUpdate,
                 }.AddToList(updater.DFixedUpdate);

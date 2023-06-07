@@ -1,5 +1,4 @@
 using Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,7 +19,7 @@ namespace Bear
             //controller
             var rootInstance = Instantiate(controller);
             rootInstance.transform.position = transform.position;
-            var root = rootInstance.GetOrAddComponent<BNodeView>();
+            var root = rootInstance.gameObject.GetOrAddComponent<BNodeView>();
             root.AddNodeData(data);
             root.GetOrAddNodeData<CharacterControllerNodeData>();
             
@@ -29,7 +28,7 @@ namespace Bear
 
             //camera
             CinemachineBrainNodeData.GetMainCameraCinemachineBrainNodeData();
-            var camRoot = Instantiate(camBase).GetOrAddComponent<BNodeView>();
+            var camRoot = Instantiate(camBase).gameObject.GetOrAddComponent<BNodeView>();
             camRoot.AddNodeData<CinemachineNodeData>();
 
             //input

@@ -1,5 +1,4 @@
 using Cinemachine;
-using Unity.VisualScripting;
 
 namespace Bear {
     public class CinemachineBrainNodeData : IBNodeData
@@ -12,7 +11,7 @@ namespace Bear {
         public void Init(IBNode root)
         {
             if (root is BNodeView view) { 
-                brain = view.GetOrAddComponent<CinemachineBrain>();
+                brain = view.gameObject.GetOrAddComponent<CinemachineBrain>();
 
             }
         }

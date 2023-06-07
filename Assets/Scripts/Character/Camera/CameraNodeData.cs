@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Bear {
@@ -31,7 +30,7 @@ namespace Bear {
         public Quaternion CameraRotation => cam.transform.rotation;
 
         public static CameraNodeData GetMainCamView() {
-            instance ??= Camera.main.GetOrAddComponent<BNodeView>().GetOrAddNodeData<CameraNodeData>();
+            instance ??= Camera.main.gameObject.GetOrAddComponent<BNodeView>().GetOrAddNodeData<CameraNodeData>();
             return instance;
 
         }

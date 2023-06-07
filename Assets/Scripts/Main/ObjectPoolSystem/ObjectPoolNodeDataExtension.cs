@@ -1,5 +1,5 @@
 using System;
-using Unity.VisualScripting;
+using UnityEngine;
 
 namespace Bear
 {
@@ -32,7 +32,7 @@ namespace Bear
 
                 var resourceNode = new BNode();
                 root.RequestResource<UnityEngine.Object>(resourceNode, resourceKey).OnLoadComplete((x) => {
-                    if (x.Resource is UnityEngine.Object view)
+                    if (x.Resource is GameObject view)
                     {
                         objectholder.Object = UnityEngine.Object.Instantiate(view).GetOrAddComponent<BNodeView>();
                     }

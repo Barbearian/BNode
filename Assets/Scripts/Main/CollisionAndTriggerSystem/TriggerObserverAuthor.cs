@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Bear
@@ -8,8 +7,8 @@ namespace Bear
         // Start is called before the first frame update
         void Start()
         {
-            this.AddComponent<TriggerObserver>();
-            this.GetOrAddComponent<BNodeView>().RegisterNodeSignalReceiver<OnTriggerEnterNodeSignal>((x) => {
+            this.gameObject.AddComponent<TriggerObserver>();
+            this.gameObject.GetOrAddComponent<BNodeView>().RegisterNodeSignalReceiver<OnTriggerEnterNodeSignal>((x) => {
                 Debug.Log("I am entered");
             });
         }
