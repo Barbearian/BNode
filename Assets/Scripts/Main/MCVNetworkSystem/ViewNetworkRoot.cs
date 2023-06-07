@@ -12,7 +12,7 @@ namespace Bear
         {
             view = GetComponent<BNodeView>();   
             foreach (BNodeView variable in GetComponentsInChildren<BNodeView>()) {
-                view.RegisterTransferSignal<WeaveSignal>(variable);
+                if(variable!=view)view.RegisterTransferSignal<WeaveSignal>(variable);
             }
 
 
