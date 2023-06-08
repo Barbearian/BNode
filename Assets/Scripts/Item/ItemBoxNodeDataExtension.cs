@@ -1,4 +1,3 @@
-using UnityEditorInternal.VR;
 
 namespace Bear
 {

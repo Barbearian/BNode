@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<linker>
+  <assembly fullname="HotFixStarter">
+    <type fullname="Bear.StartSignal" preserve="all" />
+  </assembly>
+  <assembly fullname="Main">
+    <type fullname="Bear.ActionNodeSignalExtension" preserve="all" />
+    <type fullname="Bear.BNode" preserve="all" />
+    <type fullname="Bear.BNodeExtension" preserve="all" />
+    <type fullname="Bear.BNodeSignalReceiverSystem" preserve="all" />
+    <type fullname="Bear.IBNode" preserve="all" />
+    <type fullname="Bear.IBNodeData" preserve="all" />
+    <type fullname="Bear.IBNodeSignal" preserve="all" />
+  </assembly>
+  <assembly fullname="mscorlib">
+    <type fullname="System.Action" preserve="all" />
+    <type fullname="System.Action`1" preserve="all" />
+    <type fullname="System.Diagnostics.DebuggableAttribute" preserve="all" />
+    <type fullname="System.Diagnostics.DebuggableAttribute/DebuggingModes" preserve="all" />
+    <type fullname="System.Object" preserve="all" />
+    <type fullname="System.Runtime.CompilerServices.CompilationRelaxationsAttribute" preserve="all" />
+    <type fullname="System.Runtime.CompilerServices.CompilerGeneratedAttribute" preserve="all" />
+    <type fullname="System.Runtime.CompilerServices.RuntimeCompatibilityAttribute" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.CoreModule">
+    <type fullname="UnityEngine.Debug" preserve="all" />
+    <type fullname="UnityEngine.MonoBehaviour" preserve="all" />
+  </assembly>
+</linker>

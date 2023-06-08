@@ -2,7 +2,10 @@
     "name": "HotFixStarter",
     "rootNamespace": "",
     "references": [
-        "GUID:48e41a43a0709964ab8d554006d60357"
+        "GUID:48e41a43a0709964ab8d554006d60357",
+        "GUID:fb24642277b1db2449da7ac148ce939d",
+        "GUID:e34a5702dd353724aa315fb8011f08c3",
+        "GUID:3de88c88fbbb8f944b9210d496af9762"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

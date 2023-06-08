@@ -1,34 +1,96 @@
+using IngameDebugConsole;
+using QFSW.QC;
 using System;
+using System.Collections;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using YooAsset;
 
 namespace Bear
 {
     public class HotFixStarter : MonoBehaviour
     {
-        void Start()
+        Assembly hotUpdateAss;
+        ResourcePackage package;
+
+
+
+        private void Awake()
         {
-            // Editor»·¾³ÏÂ£¬HotUpdate.dll.bytesÒÑ¾­±»×Ô¶¯¼ÓÔØ£¬²»ÐèÒª¼ÓÔØ£¬ÖØ¸´¼ÓÔØ·´¶ø»á³öÎÊÌâ¡£
+            DontDestroyOnLoad(gameObject);
+            // åˆå§‹åŒ–èµ„æºç³»ç»Ÿ
+            YooAssets.Initialize();
+
+            // åˆ›å»ºé»˜è®¤çš„èµ„æºåŒ…
+            package = YooAssets.CreatePackage("Default");
+            // è®¾ç½®è¯¥èµ„æºåŒ…ä¸ºé»˜è®¤çš„èµ„æºåŒ…ï¼Œå¯ä»¥ä½¿ç”¨YooAssetsç›¸å…³åŠ è½½æŽ¥å£åŠ è½½è¯¥èµ„æºåŒ…å†…å®¹ã€‚
+            YooAssets.SetDefaultPackage(package);
+
+            DebugLogConsole.AddCommand("Reload", "Reload Scene", ReloadAsset);
+        }
+
+        [ConsoleMethod("Reload", "Reload Asset")]
+        [Command("Reload")]
+        public void ReloadAsset() {
+
+
+
+
+            // EditorçŽ¯å¢ƒä¸‹ï¼ŒHotfix.dll.byteså·²ç»è¢«è‡ªåŠ¨åŠ è½½ï¼Œä¸éœ€è¦åŠ è½½ï¼Œé‡å¤åŠ è½½åè€Œä¼šå‡ºé—®é¢˜ã€‚
 #if !UNITY_EDITOR
-        Assembly hotUpdateAss = Assembly.Load(File.ReadAllBytes($"{Application.streamingAssetsPath}/Hotfix.dll.bytes"));
+        hotUpdateAss = Assembly.Load(File.ReadAllBytes($"{Application.streamingAssetsPath}/Hotfix.dll.bytes"));
+        
 #else
-            // EditorÏÂÎÞÐè¼ÓÔØ£¬Ö±½Ó²éÕÒ»ñµÃHotUpdate³ÌÐò¼¯
+            // Editorä¸‹æ— éœ€åŠ è½½ï¼Œç›´æŽ¥æŸ¥æ‰¾èŽ·å¾—HotUpdateç¨‹åºé›†
+
+            hotUpdateAss = System.AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "Hotfix");
            
-            Assembly hotUpdateAss = System.AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "Hotfix");
+            //StartCoroutine("InitializeYooAssetEditor");
 #endif
 
             Type type = hotUpdateAss.GetType("Hello");
-            type.GetMethod("ReceiveNodeSignal").Invoke(null, new object[]{ new StartSignal() { message = "Hello world" } });
+            type.GetMethod("Run").Invoke(null, null);
 
-            IBNode node = type.GetMethod("GetRoot").Invoke(null, null) as IBNode;
-            node.ReceiveNodeSignal(new StartSignal() { 
-                message = "Hello Bear",
-            });
+            StartCoroutine("InitializeYooAssetOffline");
+
+        }
+
+        public void OnInited()
+        {
+            Debug.Log("Start Loading scene");
+
+            package?.LoadSceneAsync("HotFixScene");
+            
+        }
+
+        private IEnumerator InitializeYooAssetEditor()
+        {
+            var initParameters = new EditorSimulateModeParameters();
+            initParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild("Default");
+            yield return package.InitializeAsync(initParameters);
+            OnInited();
+        }
+
+        private IEnumerator InitializeYooAssetOffline()
+        {
+            var initParameters = new OfflinePlayModeParameters();
+            yield return package.InitializeAsync(initParameters);
+            OnInited();
+
         }
     }
 
     public struct StartSignal : IBNodeSignal {
         public string message;
     }
+
+
 }
+
+//q: Do I need to unload assembly after not using it?
+//a: No, you don't need to unload assemblies. They are unloaded automatically when you load a new scene.
+
+//q: How to unload assembly?
+//a: Assembly.Unload() is not supported in Unity. You can use AppDomain to unload assemblies, but it's not recommended.
