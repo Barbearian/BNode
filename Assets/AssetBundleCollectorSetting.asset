@@ -33,3 +33,29 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
+    - GroupName: MaJIang
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/ArtResource/MaJiang.fbx
+        CollectorGUID: 2e0ebc99d7c3c044eb1cb005d1456150
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: Character
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Kevin Iglesias/Archer Animations/Prefabs/Archer.prefab
+        CollectorGUID: be3649f23ee2b6c488a7dcdd498dc750
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 

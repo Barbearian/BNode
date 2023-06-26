@@ -45,6 +45,21 @@ namespace Bear
             return false;
         
         }
+
+        public static bool TryFindKidAtPath(this Transform transform,out Transform kid, params string[] kids) {
+            foreach (var item in kids)
+            {
+                transform = transform.Find(item);
+                if (!transform) {
+                    kid = transform;
+                    return false;
+                }
+            }
+
+            kid = transform;
+            return true;
+            
+        }
     }
 
 

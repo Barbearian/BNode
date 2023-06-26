@@ -1,0 +1,62 @@
+{
+    "FileVersion": "1.4.6",
+    "EnableAddressable": true,
+    "OutputNameStyle": 1,
+    "PackageName": "Default",
+    "PackageVersion": "2023-06-11-771",
+    "AssetList": [
+        {
+            "Address": "HotFixScene",
+            "AssetPath": "Assets/Hotfix/HotFixScene.unity",
+            "AssetTags": [],
+            "BundleID": 0,
+            "DependIDs": [
+                2
+            ]
+        },
+        {
+            "Address": "MaJiang",
+            "AssetPath": "Assets/ArtResource/MaJiang.fbx",
+            "AssetTags": [],
+            "BundleID": 1,
+            "DependIDs": [
+                2
+            ]
+        }
+    ],
+    "BundleList": [
+        {
+            "BundleName": "default_assets_hotfix.bundle",
+            "FileHash": "163a98b85742afee4b65ef026d2463b5",
+            "FileCRC": "fd49b3e7",
+            "FileSize": 120769,
+            "IsRawFile": false,
+            "LoadMethod": 0,
+            "Tags": [],
+            "ReferenceIDs": []
+        },
+        {
+            "BundleName": "default_assets_artresource.bundle",
+            "FileHash": "c15d4bd292ecb8b69e6c25781654c54b",
+            "FileCRC": "9f548c71",
+            "FileSize": 195776,
+            "IsRawFile": false,
+            "LoadMethod": 0,
+            "Tags": [],
+            "ReferenceIDs": []
+        },
+        {
+            "BundleName": "default_unityshaders.bundle",
+            "FileHash": "d8cec91ad44527171f9a5ca1d95fef25",
+            "FileCRC": "e556bd91",
+            "FileSize": 51448,
+            "IsRawFile": false,
+            "LoadMethod": 0,
+            "Tags": [],
+            "ReferenceIDs": [
+                0,
+                1
+            ]
+        }
+    ]
+}

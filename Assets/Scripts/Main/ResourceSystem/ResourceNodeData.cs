@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Bear
 {
@@ -8,6 +9,7 @@ namespace Bear
     public class ResourceNodeData : IBNodeData
     {
         public Dictionary<string, IBNode> resources = new Dictionary<string, IBNode>();
+        public Func<IResourceLoader> ResourceLoader = ResourceFileLoader.Make;
         public void Detached()
         {
         }
@@ -17,7 +19,7 @@ namespace Bear
         {
         }
 
-        public ResourceHolderNodeData Load<T>(string Key, IBNode resourceHolder) { 
+        public ResourceHolderNodeData Load<T>(string Key, IBNode resourceHolder) where T:Object{ 
                         
             if (resources.ContainsKey(Key))
             {
@@ -32,15 +34,15 @@ namespace Bear
 
         }
 
-        private ResourceHolderNodeData CreateHolder<T>(string key, IBNode resourceHolder)
+        private ResourceHolderNodeData CreateHolder<T>(string key, IBNode resourceHolder) where T : Object 
         {
             var holder = resourceHolder.GetOrAddNodeData<ResourceHolderNodeData>();
-            //if T is Object then add BNodeView
-            if (typeof(T) == typeof(Object))
+
+            ResourceLoader().LoadAsync<T> (key, (resource) =>
             {
-                holder.Resource = Resources.Load<Object>(key);
-            }
-            
+                holder.Resource = resource;
+            });
+
             return holder;
         }
         
@@ -50,5 +52,29 @@ namespace Bear
 
     }
 
+    public interface IResourceLoader
+    {
+        public void LoadAsync<T>(string path,Action<T> DOnComplete) where T: Object;
+        public void Release();
+        public Object Resource { get; }
+    }
 
+    public struct ResourceFileLoader : IResourceLoader
+    {
+
+        public static Func<IResourceLoader> Make = () => { return new ResourceFileLoader(); };
+        public Object Resource { get; set; }
+
+        void IResourceLoader.LoadAsync<T>(string path, Action<T> DOnComplete)
+        {
+            
+            Resource = Resources.Load<T>(path);
+            DOnComplete.Invoke(Resource as T);
+        }
+
+        public void Release()
+        {
+            Resources.UnloadAsset(Resource);
+        }
+    }
 }

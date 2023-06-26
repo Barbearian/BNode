@@ -5,45 +5,54 @@ namespace Bear
 {
     public static class ObjectPoolNodeDataExtension
     {
-        public static Func<IBNode,string, Func<IBNode>> CreateAsset { get; set; } = CreateHolder;
-        public static Func< string, Func<IBNode>> CreateGlobalAsset { get; set; } = CreateHolder;
-
 
         public static ObjectHolderNodeData RequestObject(this IBNode node, string resourceKey) {
             //create an object pool if not exist
             var pool = node.GetOrAddNodeData<ObjectPoolNodeData>();
-            return pool.GetPool(resourceKey).Get().GetOrAddNodeData<ObjectHolderNodeData>();
+            var objPool = pool.GetPool(resourceKey);
+            var data = objPool.Get().GetOrAddNodeData<ObjectHolderNodeData>();
+            data.pool = objPool;
 
+            return data;
         }
 
-        public static ObjectHolderNodeData RequestObject(this IBNode node, string resourceKey,Action<ObjectHolderNodeData> oncomplete)
+        public static ObjectHolderNodeData RequestObject(this IBNode node, string resourceKey, params string[] subkeys)
         {
-            var request = node.RequestObject(resourceKey);
-            request.OnLoadComplete(oncomplete);
-            return request;
+            //create an object pool if not exist
+            var pool = node.GetOrAddNodeData<ObjectPoolNodeData>();
+
+            var objPool = pool.GetPool(resourceKey, subkeys);
+            var data = objPool.Get().GetOrAddNodeData<ObjectHolderNodeData>();
+
+            data.pool = objPool;
+            return data;
         }
 
+        public static ObjectHolderNodeData RequestObject(this IBNode node, string[] subkeys)
+        {
+            if (subkeys.Length == 1) {
+                return node.RequestObject(subkeys[0]);
+            } else if (subkeys.Length > 1) {
+                string[] newsubkeys = new string[subkeys.Length - 1];
+                Array.Copy(subkeys, 1, newsubkeys, 0, subkeys.Length - 1);
+                return node.RequestObject(subkeys[0], newsubkeys);
+            }
 
-        public static Func<IBNode> CreateHolder(IBNode root,string resourceKey) {
-            return () =>
-            {
-                var objectNode = new BNode();
-                var objectholder = objectNode.AddNodeData<ObjectHolderNodeData>();
-
-                var resourceNode = new BNode();
-                root.RequestResource<UnityEngine.Object>(resourceNode, resourceKey).OnLoadComplete((x) => {
-                    if (x.Resource is GameObject view)
-                    {
-                        objectholder.Object = UnityEngine.Object.Instantiate(view).GetOrAddComponent<BNodeView>();
-                    }
-                    
-                });
-                return objectNode;
-            };
+            return null;
         }
 
-        public static Func<IBNode> CreateHolder(string resourceKey) {
-            return CreateHolder(SingletonNodeSystem.Root,resourceKey);
+        private static BNodeView _ObjectView;
+        private static bool hasObjectView;
+        public static BNodeView ObjectPoolView {
+            get {
+                if (!hasObjectView) { 
+                    _ObjectView = new GameObject("ObjectPool").AddComponent<BNodeView>();
+                    GameObject.DontDestroyOnLoad(_ObjectView);
+                    hasObjectView= true;
+                }
+
+                return _ObjectView;
+            }
         }
 
 

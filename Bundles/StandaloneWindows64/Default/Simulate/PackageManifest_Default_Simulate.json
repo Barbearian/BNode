@@ -1,0 +1,62 @@
+{
+    "FileVersion": "1.4.6",
+    "EnableAddressable": true,
+    "OutputNameStyle": 1,
+    "PackageName": "Default",
+    "PackageVersion": "Simulate",
+    "AssetList": [
+        {
+            "Address": "HotFixScene",
+            "AssetPath": "Assets/Hotfix/HotFixScene.unity",
+            "AssetTags": [],
+            "BundleID": 0,
+            "DependIDs": []
+        },
+        {
+            "Address": "MaJiang",
+            "AssetPath": "Assets/ArtResource/MaJiang.fbx",
+            "AssetTags": [],
+            "BundleID": 1,
+            "DependIDs": []
+        },
+        {
+            "Address": "Archer",
+            "AssetPath": "Assets/Kevin Iglesias/Archer Animations/Prefabs/Archer.prefab",
+            "AssetTags": [],
+            "BundleID": 2,
+            "DependIDs": []
+        }
+    ],
+    "BundleList": [
+        {
+            "BundleName": "default_assets_hotfix.bundle",
+            "FileHash": "00000000000000000000000000000000",
+            "FileCRC": "00000000",
+            "FileSize": 0,
+            "IsRawFile": false,
+            "LoadMethod": 0,
+            "Tags": [],
+            "ReferenceIDs": []
+        },
+        {
+            "BundleName": "default_assets_artresource.bundle",
+            "FileHash": "00000000000000000000000000000000",
+            "FileCRC": "00000000",
+            "FileSize": 0,
+            "IsRawFile": false,
+            "LoadMethod": 0,
+            "Tags": [],
+            "ReferenceIDs": []
+        },
+        {
+            "BundleName": "default_assets_kevin iglesias_archer animations_prefabs.bundle",
+            "FileHash": "00000000000000000000000000000000",
+            "FileCRC": "00000000",
+            "FileSize": 0,
+            "IsRawFile": false,
+            "LoadMethod": 0,
+            "Tags": [],
+            "ReferenceIDs": []
+        }
+    ]
+}

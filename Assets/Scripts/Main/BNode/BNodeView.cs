@@ -41,7 +41,10 @@ namespace Bear
         {
             node.Detached();
         }
-       
 
+        public void OnDestroy()
+        {
+            Detached();
+        }
     }
 }

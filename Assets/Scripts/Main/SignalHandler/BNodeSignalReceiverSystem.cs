@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Runtime.Serialization.Configuration;
 using UnityEngine;
 
 namespace Bear
@@ -14,6 +15,12 @@ namespace Bear
 
             var key = signal.GetType().ToString();
             receiver.ReceiveSignal(key, signal);
+        }
+
+        public static void ReceiveNodeSignal<T>(this IBNode node, IBNodeSignal signal)
+        {
+            var key = typeof(T).ToString();
+            node.ReceiveNodeSignal(key, signal);
         }
 
         public static void ReceiveNodeSignal(this IBNode node, string key,IBNodeSignal signal)

@@ -20,15 +20,9 @@ namespace Bear
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
-            // 初始化资源系统
-            YooAssets.Initialize();
-
-            // 创建默认的资源包
-            package = YooAssets.CreatePackage("Default");
-            // 设置该资源包为默认的资源包，可以使用YooAssets相关加载接口加载该资源包内容。
-            YooAssets.SetDefaultPackage(package);
 
             DebugLogConsole.AddCommand("Reload", "Reload Scene", ReloadAsset);
+            DebugLogConsole.AddCommand<string, string[]>("Instantiate", "Instantiate Asset", InstantiateObject);
         }
 
         [ConsoleMethod("Reload", "Reload Asset")]
@@ -53,8 +47,12 @@ namespace Bear
             Type type = hotUpdateAss.GetType("Hello");
             type.GetMethod("Run").Invoke(null, null);
 
-            StartCoroutine("InitializeYooAssetOffline");
 
+        }
+
+        public void InstantiateObject(string mainkey ,string[] paths) {
+            SingletonNodeSystem.Root.RequestObject(mainkey,paths);
+          
         }
 
         public void OnInited()
@@ -65,21 +63,7 @@ namespace Bear
             
         }
 
-        private IEnumerator InitializeYooAssetEditor()
-        {
-            var initParameters = new EditorSimulateModeParameters();
-            initParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild("Default");
-            yield return package.InitializeAsync(initParameters);
-            OnInited();
-        }
 
-        private IEnumerator InitializeYooAssetOffline()
-        {
-            var initParameters = new OfflinePlayModeParameters();
-            yield return package.InitializeAsync(initParameters);
-            OnInited();
-
-        }
     }
 
     public struct StartSignal : IBNodeSignal {

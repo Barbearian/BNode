@@ -45,10 +45,12 @@ namespace Bear
             return false;
         }
 
-        public Action Register<T>(string key,Action<T> listener) {
+        public Action Register<T>(string key, Action<T> listener)
+        {
             if (!BProperties.TryGetValue(key, out var bProperty))
             {
                 bProperty = new BindableProperty();
+                bProperty.SetValue(default(T));
                 BProperties[key] = bProperty;
             }
             return bProperty.RegisterAction(listener);

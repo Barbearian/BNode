@@ -1,0 +1,30 @@
+ManifestFileVersion: 0
+CRC: 4181659059
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 729ef702a0da48a9e9584e6bc6ed36bf
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 81fc4833398717ae320ec5bd08c661f4
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/ArtResource/MaJiang.fbx
+Dependencies:
+- D:/UnityProject/BNode/Bundles/StandaloneWindows64/Default/OutputCache/default_unityshaders.bundle
