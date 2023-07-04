@@ -34,6 +34,9 @@ namespace Bear
                 if (!view.TryGetComponent<MRViewCollector>(out var collector))
                 {
                     collector = view.gameObject.AddComponent<MRViewCollector>();
+                    collector.Collect(true);
+                }
+                else {
                     collector.Collect();
                 }
 

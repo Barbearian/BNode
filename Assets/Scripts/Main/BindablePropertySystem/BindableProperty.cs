@@ -5,8 +5,10 @@ namespace Bear
     {
         public object _value;
         public Action<object> DOnUpdate;
+        public bool HasValue;
         public void SetValue<T>(T value) { 
             _value = value;
+            HasValue = true;
             DOnUpdate?.Invoke(value);
         }        
 

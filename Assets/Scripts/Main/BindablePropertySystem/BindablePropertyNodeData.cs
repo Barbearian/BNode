@@ -35,7 +35,7 @@ namespace Bear
         }
 
         public bool TryGetValue<T>(string key,out T value ) {
-            if (BProperties.TryGetValue(key, out var bProperty))
+            if (BProperties.TryGetValue(key, out var bProperty) && bProperty.HasValue)
             {
                 value = bProperty.GetValue<T>();
                 return true;
@@ -52,6 +52,8 @@ namespace Bear
                 bProperty = new BindableProperty();
                 bProperty.SetValue(default(T));
                 BProperties[key] = bProperty;
+
+                bProperty.HasValue = false;
             }
             return bProperty.RegisterAction(listener);
         }

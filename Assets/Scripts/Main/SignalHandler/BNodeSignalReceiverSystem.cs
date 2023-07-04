@@ -1,7 +1,5 @@
 
 using System.Collections.Generic;
-using System.Runtime.Serialization.Configuration;
-using UnityEngine;
 
 namespace Bear
 {

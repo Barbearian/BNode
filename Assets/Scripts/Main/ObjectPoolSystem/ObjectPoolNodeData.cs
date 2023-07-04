@@ -1,5 +1,6 @@
 
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -12,8 +13,10 @@ namespace Bear
         [JsonIgnore]
         public Dictionary<string, ObjectPool<IBNode>> pools = new Dictionary<string, ObjectPool<IBNode>>();
         private IBNode root;
+        public Func<IBNode, string, ObjectPool<IBNode>> DCreatePool { get; set; } = CreatePool;
         public void Detached()
         {
+
         }
 
         public void Init(IBNode root)
@@ -29,7 +32,7 @@ namespace Bear
             }
             else
             {
-                var pool = CreatePool(key);
+                var pool = DCreatePool(root, key);
                 pools.Add(key, pool);
                 return pool;
             }
@@ -40,10 +43,12 @@ namespace Bear
             StringBuilder builder = new StringBuilder();
             builder.Append(key);
             builder.Append("[");
-            for (int i = 0; i < subkeys.Length; i++) {
+            for (int i = 0; i < subkeys.Length; i++)
+            {
                 builder.Append(subkeys[i]);
-                if (i != subkeys.Length-1) { 
-                    builder.Append("/");    
+                if (i != subkeys.Length - 1)
+                {
+                    builder.Append("/");
                 }
             }
             builder.Append("]");
@@ -62,30 +67,32 @@ namespace Bear
         }
         //Create a new Object Pool
 
-        private ObjectPool<IBNode> CreatePool(string key) {
+        private static ObjectPool<IBNode> CreatePool(IBNode root, string key)
+        {
 
             var rs = new ObjectPool<IBNode>(
                 () => {
                     var holder = new BNode();
                     var holderData = holder.GetOrAddNodeData<ObjectHolderNodeData>();
-                    
+
 
                     var resourceNode = new BNode();
                     root.RequestResource<GameObject>(resourceNode, key).OnLoadComplete((x) => {
                         holder.SetValue(new ObjectHolderReference()
                         {
                             reference = x.Resource as GameObject
-                        }) ;
+                        });
                     });
                     return holder;
                 },
                 actionOnDestroy: (x) => {
-                    
-                    x.ReceiveNodeSignal(new ObjectHolderDisposeSignal() { isFromPool = true});
+
+                    x.ReceiveNodeSignal(new ObjectHolderDisposeSignal() { isFromPool = true });
                 },
                 actionOnRelease: (x) =>
                 {
-                    if (x.FindNodeData<ObjectHolderNodeData>(out var data) && data.Object is BNodeView view) { 
+                    if (x.FindNodeData<ObjectHolderNodeData>(out var data) && data.Object is BNodeView view)
+                    {
                         view.transform.SetParent(ObjectPoolNodeDataExtension.ObjectPoolView.transform);
                     }
                 }
@@ -95,7 +102,7 @@ namespace Bear
             return rs;
         }
 
-        private ObjectPool<IBNode> CreatePool(string key,params string[] subkeys)
+        private ObjectPool<IBNode> CreatePool(string key, params string[] subkeys)
         {
             var rs = new ObjectPool<IBNode>(
                 () => {
@@ -104,7 +111,8 @@ namespace Bear
 
                     var resourceNode = new BNode();
                     root.RequestResource<GameObject>(resourceNode, key).OnLoadComplete((x) => {
-                        if (x.Resource is GameObject obj && obj.transform.TryFindKidAtPath(out var kid, subkeys)) {
+                        if (x.Resource is GameObject obj && obj.transform.TryFindKidAtPath(out var kid, subkeys))
+                        {
                             holder.SetValue(new ObjectHolderReference()
                             {
                                 reference = kid.gameObject
@@ -126,13 +134,13 @@ namespace Bear
 
             );
 
-           
+
             return rs;
         }
 
 
     }
 
-    
+
 }
 

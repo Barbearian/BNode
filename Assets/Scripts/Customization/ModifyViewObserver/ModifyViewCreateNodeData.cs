@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Bear
@@ -7,6 +8,7 @@ namespace Bear
     public class ModifyViewCreateNodeData : IBNodeData
     {
         IBNode root;
+        Dictionary<string,IViewModifySignal> records = new Dictionary<string, IViewModifySignal>();
         public void Detached()
         {
         }
@@ -14,7 +16,7 @@ namespace Bear
         public void Init(IBNode root)
         {
             this.root = root;
-            root.RegisterNodeSignalReceiverAdditively(CustomizeKeywords.ModifyView, ModifyView);
+            root.RegisterNodeSignalReceiverAdditively<IViewModifySignal>( ModifyView);
         }
 
         public void ModifyView(IBNodeSignal signal)
@@ -28,8 +30,12 @@ namespace Bear
             data.ModifyView(msignal);
 
 
+            Record(msignal);
 
+        }
 
+        public void Record(IViewModifySignal signal) {
+            records[signal.SelfTypeKey] = signal;
         }
 
     }
@@ -52,8 +58,6 @@ namespace Bear
         public void ModifyView(IViewModifySignal signal)
         {
             OnUpdate();
-
-
             signal.Modify(targetNode);
             DOnUpdate += signal.ListenToChange(targetNode, () => {
                 signal.Modify(targetNode);

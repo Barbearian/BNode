@@ -10,7 +10,8 @@ namespace Bear
     public class ViewTreeNodeData : IBNodeData
     {
         IBNode root;
-        
+        Dictionary<string, ICreateViewSignal> changes = new Dictionary<string, ICreateViewSignal>();
+        public IBNode ObjectPool = SingletonNodeSystem.Root;
         public void Detached()
         {
 
@@ -28,7 +29,7 @@ namespace Bear
 
 
             var path = signal.ResourcePath.ToViewPath();
-            SingletonNodeSystem.Root.RequestObject(path).OnLoadComplete(x => {
+            ObjectPool.RequestObject(path).OnLoadComplete(x => {
                 root.ReceiveNodeSignal(new OnCreateViewSignal() { 
                     ViewType = signal.ViewType.ToString(),
                     TypeKey = signal.TypeKey,
@@ -37,8 +38,14 @@ namespace Bear
                 });
 
                 signal.OnComplete?.Invoke(x);
+
+
             });
-            
+            RecordChange(signal);
+        }
+
+        public void RecordChange(ICreateViewSignal changeViewSignal) {
+            changes[changeViewSignal.TypeKey] = changeViewSignal;
         }
 
 
@@ -80,7 +87,11 @@ namespace Bear
         public string ViewType;
         public string TypeKey;
         public ObjectHolderNodeData holder;
+
+        public bool IsUsed { get; set; }
     }
+
+    
 
     [System.Serializable]
     public struct DelinkViewSignal : IBNodeSignal
@@ -96,6 +107,7 @@ namespace Bear
     [System.Serializable]
     public enum EViewType
     {
+        GameObject,
         MeshRenderer,
         SkinnedMeshRenderer,
         Bone,
@@ -128,4 +140,6 @@ namespace Bear
         }
 
     }
+
+   
 }

@@ -17,12 +17,6 @@ namespace Bear
 
         }
 
-        public static ResourceHolderNodeData RequestResource<T>(this IBNode holder, string key) where T : Object
-        {
-            IBNode node = SingletonNodeSystem.Root;
-            return node.RequestResource<T>(holder,key);
-        }
-
 
     }
 }

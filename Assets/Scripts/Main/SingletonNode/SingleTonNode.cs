@@ -47,7 +47,7 @@ namespace Bear
         private static void Init()
         {
             _root = new GameObject().AddComponent<BNodeView>();
-            GameObject.DontDestroyOnLoad(_root);
+            Object.DontDestroyOnLoad(_root);
 
             inited = true;
         }

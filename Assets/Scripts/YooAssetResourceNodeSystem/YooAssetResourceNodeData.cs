@@ -10,17 +10,26 @@ namespace Bear
         public string packagePath;
         public string packageName = "Default";
         public Action DOnInited;
+
         public void Detached()
         {
         }
 
         public void Init(IBNode root)
         {
-            var resourceNode = root.GetOrAddNodeData<ResourceNodeData>();
-            YooAssets.Initialize();
-            package = YooAssets.CreatePackage(packageName);
-            resourceNode.ResourceLoader = () => { return new YooAssetLoader() { package = package }; };
+            if (YooAssets.HasPackage(packageName))
+            {
+                package = YooAssets.GetPackage(packageName);
+            }
+            else
+            {
+                package = YooAssets.CreatePackage(packageName);
+            }
             
+
+            var resourceNode = root.GetOrAddNodeData<ResourceNodeData>();
+            resourceNode.ResourceLoader = () => { return new YooAssetLoader() { package = package }; };
+
         }
 
         public IEnumerator InitEditor() 
@@ -63,7 +72,7 @@ namespace Bear
              };
         }
 
-        public void Release()
+        public readonly void Release()
         {
             operationHandle?.Release();
         }

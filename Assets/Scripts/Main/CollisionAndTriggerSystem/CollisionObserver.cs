@@ -16,7 +16,7 @@ namespace Bear
         }
         public void OnCollisionEnter(Collision collision)
         {
-            if (collision.body.TryGetComponent<BNodeView>(out var target))
+            if (collision.collider.TryGetComponent<BNodeView>(out var target))
             {
                 view.ReceiveNodeSignal(new OnCollisionEnterNodeSignal()
                 {
@@ -28,7 +28,7 @@ namespace Bear
 
         public void OnCollisionExit(Collision collision)
         {
-            if (collision.body.TryGetComponent<BNodeView>(out var target))
+            if (collision.collider.TryGetComponent<BNodeView>(out var target))
             {
                 view.ReceiveNodeSignal(new OnCollisionExitNodeSignal()
                 {

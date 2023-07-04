@@ -14,14 +14,25 @@ namespace Bear
         public void Init(IBNode root)
         {
             this.root = root;
-            root.RegisterNodeSignalReceiverAdditively<OnCreateViewSignal>(OnViewCreate);
+            root.RegisterNodeSignalReceiverAdditively<OnCreateViewSignal>(ViewCreate);
             root.RegisterNodeSignalReceiverAdditively<DelinkViewSignal>(DelinkView);
 
         }
-
+        private void ViewCreate(OnCreateViewSignal signal) {
+            //set holder
+            root.GetOrAddNodeAtPath(signal.TypeKey).SetValue(signal.holder);
+            OnViewCreate(signal);
+            OnViewUpdated(signal);
+        }
         public virtual void OnViewCreate(OnCreateViewSignal signal)
         {
 
+        }
+
+        public virtual void OnViewUpdated(OnCreateViewSignal signal)
+        {
+            var target = signal.Root.GetOrAddNodeAtPath(signal.TypeKey);
+            target.ReceiveNodeSignal(new OnViewUpdatedSignal());
         }
 
         public virtual void DelinkView(DelinkViewSignal signal)
@@ -85,5 +96,9 @@ namespace Bear
                 }
             });
         }
+    }
+
+    public struct OnViewUpdatedSignal:IBNodeSignal
+    { 
     }
 }

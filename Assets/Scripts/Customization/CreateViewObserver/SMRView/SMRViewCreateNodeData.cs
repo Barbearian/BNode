@@ -17,6 +17,7 @@ namespace Bear
             data.UpdateView(signal);
 
             signal.ViewType = EViewType.MeshRenderer.ToString();
+            signal.IsUsed = true;
             signal.Root.ReceiveNodeSignal(signal);
         }
 

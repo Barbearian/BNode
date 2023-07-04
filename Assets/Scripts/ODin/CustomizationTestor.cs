@@ -6,6 +6,7 @@ using System;
 
 namespace Bear
 {
+    [RequireComponent(typeof(BNodeView))]
     public class CustomizationTestor : MonoBehaviour
     {
         BNodeView root;
@@ -15,7 +16,7 @@ namespace Bear
         public List<TransformViewModifySignal> updateTransforms;
         private void Awake()
         {
-            root = gameObject.ToCustomizeView();
+            root = gameObject.ToCustomizeView(true);
 
         }
 
@@ -31,7 +32,7 @@ namespace Bear
         public void ModifyColor() {
             cSignals.ForEach(s =>
             {
-                root.ReceiveNodeSignal(CustomizeKeywords.ModifyView,s);
+                root.ReceiveNodeSignal<IViewModifySignal>(s);
             });
         }
 
@@ -47,7 +48,7 @@ namespace Bear
         public void UpdateTransforms()
         {
             updateTransforms.ForEach(s => {
-                root.ReceiveNodeSignal(CustomizeKeywords.ModifyView, s);
+                root.ReceiveNodeSignal<IViewModifySignal>(s);
             });
 
         }
